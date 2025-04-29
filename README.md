@@ -1,0 +1,1 @@
+# This repository just has my waybar scripts for my laptop
