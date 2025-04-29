@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'query.dart';
+import 'override.dart';
 
 void main(List<String> arguments) {
   if (arguments.isEmpty) {
-    print(get_background());
-  }
+    print("#");
+  } else if (arguments[0] == "--bar") {
+    reload_pywal(get_background());
+  } 
 }

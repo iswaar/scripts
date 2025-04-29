@@ -7,7 +7,9 @@ String get_background () {
     exit(1);
   }
   if (query.stdout.isNotEmpty) {
-    return query.stdout;
+    String data = query.stdout.toString();
+    data = data.split("image: ")[1].split("\n")[0];
+    return data;
   }
   return "";
 }
