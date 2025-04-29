@@ -1,7 +1,8 @@
 import 'dart:io';
+import 'query.dart';
 
 void main(List<String> arguments) {
   if (arguments.isEmpty) {
-    exit(0);
+    print(get_background());
   }
 }
