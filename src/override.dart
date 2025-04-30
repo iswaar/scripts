@@ -35,6 +35,11 @@ void set_background(String background, {bool live = false}) {
     background_process("mpvpaper eDP-1 '$background' -o 'no-audio loop'");
   } else {
     // set the background using swww as the wallpaper engine
+
+    if (is_live_background()) {
+      background_process('swww-daemon');
+    }
+
     Process.runSync("swww", [
       "img",
       background,
@@ -46,12 +51,12 @@ void set_background(String background, {bool live = false}) {
 }
 
 void control(File background, {bool live = false}) {
-  if (live) {
+  if (!live) {
     Process.runSync('pkill', ['mpvpaper']);
-    background_process('swww-daemon');
-    set_background(background.path);
+    set_background(background.path, live: live);
   } else {
     Process.runSync('pkill', ['swww']);
+    set_background(background.path, live: live);
   }
 }
 

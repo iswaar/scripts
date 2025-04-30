@@ -27,9 +27,9 @@ void main(List<String> arguments) {
     reload_pywal(get_background());
   } else if (arguments[0] == "--toggle") {
     if (is_live_background()) {
-      set_background(default_background_live.path, live: true);
+      control(default_background_live, live: true);
     } else {
-      set_background(default_background_static.path);
+      control(default_background_static, live: false);
     }
   } else if (is_live_background()) {}
 }
