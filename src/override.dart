@@ -1,5 +1,14 @@
+import 'dart:math';
 import 'query.dart';
 import 'dart:io';
+
+void background_process(String process) {
+  // uses bash for now ( maybe temporary lol )
+  Process.runSync('bash', [
+    "-c",
+    ' ( ( ($process)& ) && disown) || echo failed ; exit',
+  ]);
+}
 
 void reload_pywal(String background) {
   String user = Process.runSync("whoami", []).stdout.toString();
@@ -22,7 +31,10 @@ void reload_pywal(String background) {
 
 void set_background(String background, {bool live = false}) {
   if (live) {
+    // start mpvpaper in the background and make it loop without audio on eDP-1
+    background_process("mpvpaper eDP-1 '$background' -o 'no-audio loop'");
   } else {
+    // set the background using swww as the wallpaper engine
     Process.runSync("swww", [
       "img",
       background,
@@ -31,4 +43,28 @@ void set_background(String background, {bool live = false}) {
       "--transition-pos=top",
     ]);
   }
+}
+
+void control(File background, {bool live = false}) {
+  if (live) {
+    Process.runSync('pkill', ['mpvpaper']);
+    background_process('swww-daemon');
+    set_background(background.path);
+  } else {
+    Process.runSync('pkill', ['swww']);
+  }
+}
+
+void random_background() {
+  String current_background = get_background();
+  String wallpaper_directory = get_directory(current_background);
+  List<String> avaliable_backgrounds = [];
+  for (var file in directory_list_files(Directory(wallpaper_directory))) {
+    if (file != current_background) {
+      avaliable_backgrounds += [file.path];
+    }
+  }
+  String chosen =
+      avaliable_backgrounds[Random().nextInt(avaliable_backgrounds.length)];
+  set_background(chosen, live: (is_live_background()));
 }
