@@ -1,3 +1,4 @@
+import 'query.dart';
 import 'dart:io';
 
 void reload_pywal(String background) {

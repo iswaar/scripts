@@ -9,5 +9,10 @@ void main(List<String> arguments) {
     reload_pywal(get_background());
   } else if (arguments[0] == "--increment") {
   } else if (arguments[0] == "--decrement") {
-  } else if (arguments[0] == "--toggle") {}
+  } else if (arguments[0] == "--toggle") {
+    set_background(
+      get_background(),
+      live: ((Process.runSync("pidof", ["swww-daemon"]).exitCode) != 0),
+    );
+  }
 }
