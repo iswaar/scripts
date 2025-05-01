@@ -32,6 +32,9 @@ void reload_pywal(String background) {
 void set_background(String background, {bool live = false}) {
   if (live) {
     // start mpvpaper in the background and make it loop without audio on eDP-1
+    if (is_live_background()) {
+      Process.runSync('pkill', ['mpvpaper']);
+    }
     background_process("mpvpaper eDP-1 '$background' -o 'no-audio loop'");
   } else {
     // set the background using swww as the wallpaper engine
