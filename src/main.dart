@@ -11,8 +11,8 @@ void main(List<String> arguments) {
     "/home/$user/.wallpapers/live/default.mp4",
   );
 
-  if (default_background_live.parent.parent !=
-      default_background_static.parent.parent) {
+  if (default_background_live.parent.parent.path !=
+      default_background_static.parent.parent.path) {
     print(
       'live and static wallpapers parent parent directories does not match',
     );

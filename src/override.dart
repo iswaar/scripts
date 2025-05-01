@@ -4,10 +4,10 @@ import 'dart:io';
 
 void background_process(String process) {
   // uses bash for now ( maybe temporary lol )
-  Process.runSync('bash', [
+  Process.start('bash', [
     "-c",
     ' ( ( ($process)& ) && disown) || echo failed ; exit',
-  ]);
+  ], mode:  ProcessStartMode.detached);
 }
 
 void reload_pywal(String background) {
