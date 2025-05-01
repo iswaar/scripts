@@ -40,7 +40,7 @@ void set_background(String background, {bool live = false}) {
     // set the background using swww as the wallpaper engine
 
     if (is_live_background()) {
-      background_process('swww-daemon');
+      background_process('swww-daemon --format xrgb');
     }
 
     Process.runSync("swww", [
