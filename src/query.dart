@@ -47,7 +47,7 @@ List<Directory> directory_list_folders(Directory path) {
 
 String get_directory(String file) {
   File FS_entity = File(file);
-  return FS_entity.parent.toString();
+  return FS_entity.parent.path;
 }
 
 bool is_live_background() {

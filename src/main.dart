@@ -38,5 +38,7 @@ void main(List<String> arguments) {
     increment(File(get_background()).parent, File(get_background()));
   } else if (arguments[0] == "--decrement") {
     decrement(File(get_background()).parent, File(get_background()));
+  } else if (arguments[0] == "--random") {
+    random_background(); // not tested
   }
 }
