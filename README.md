@@ -6,7 +6,7 @@
   - [x] increment live and static wallpapers
   - [x] decrement live and static wallpapers
   - [x] choose a random live or static wallpaper
-  - [ ] change currently active folder
+  - [x] change currently active folder
 
 build/ is only for the build output
 
