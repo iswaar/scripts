@@ -1,52 +1,54 @@
 import 'dart:io';
 
 class logger {
-  void warn ( String message ) {
+  void warn(String message) {
     print('WARNING: $message');
   }
-  void info ( String message ) {
+
+  void info(String message) {
     print('INFO: $message');
   }
 }
 
-
-void compile (logger log) {
-  if (Process.runSync(
-        "dart", ["compile", "exe", "src/main.dart", "-o", "build/waybar"]
-  ).exitCode == 0) {
-    log.info("Successfull compiled src/main.dart"); 
+void compile(logger log, Directory Folder) {
+  ProcessResult process = Process.runSync("dart", [
+    "compile",
+    "exe",
+    Folder.path + "/src/main.dart",
+    "-o",
+    "build/" + Folder.path.split('/').last,
+  ]);
+  if (process.exitCode == 0) {
+    log.info("Successfull compiled ${Folder.path}/src/main.dart");
     exit(0);
   } else {
-    log.warn("Failed to build src/main.dart");      
-    exit(1); 
-  }
-}
-
-void run (logger log, List<String> args) {
-  if (Process.runSync("dart", ["run", "src/main.dart"] + args).exitCode == 0
-  ) {
-    log.info("Successfull ran src/main.dart");
-    exit(0);
-  } else {
-    log.warn("Error running src/main.dart");
+    log.warn("Failed to build ${Folder.path}/src/main.dart");
+    print("=== StdERR " + "=" * (stdout.terminalColumns - 11));
+    print(process.stderr);
     exit(1);
   }
 }
 
-
-
-void main ( List<String> arguments ) {
+void main(List<String> arguments) {
   if (arguments.isEmpty) {
-    print("""
---build : compile
---run   : quick run""");
+    print("--build : compile");
     exit(-1);
   }
   logger log = logger();
+  void iterate(FileSystemEntity entity) {
+    if ((entity.statSync().type == FileSystemEntityType.directory) &
+        (!([
+          '.git',
+          '.vscode',
+          'build',
+        ].any((String x) => entity.path.contains(x))))) {
+      compile(log, Directory(entity.path));
+    }
+  }
+
   if (arguments.first == "--build") {
-    compile(log);
-  } 
-  if (arguments.first == "--run") {
-    run(log, arguments);
+    Directory(
+      ".",
+    ).listSync().forEach((FileSystemEntity entity) => iterate(entity));
   }
 }
