@@ -3,9 +3,9 @@
 - [ ] Custom waybar button
   - [x] reload pywal
   - [x] toggle between live and static wallpapers
-  - [ ] increment live and static wallpapers
-  - [ ] decrement live and static wallpapers
-  - [ ] choose a random live or static wallpaper
+  - [x] increment live and static wallpapers
+  - [x] decrement live and static wallpapers
+  - [x] choose a random live or static wallpaper
   - [ ] change currently active folder
 
 build/ is only for the build output
