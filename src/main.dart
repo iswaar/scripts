@@ -40,5 +40,9 @@ void main(List<String> arguments) {
     decrement(File(get_background()).parent, File(get_background()));
   } else if (arguments[0] == "--random") {
     random_background(); // not tested
+  } else if (arguments[0] == "--folder-increment") {
+    Folder_switch(default_directory, 1);
+  } else if (arguments[0] == "--folder-decrement") {
+    Folder_switch(default_directory, -1);
   }
 }

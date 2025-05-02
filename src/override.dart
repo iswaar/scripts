@@ -79,7 +79,9 @@ void random_background() {
 
 void increment(Directory directory, File current_background) {
   List<String> listing = [];
-  directory.listSync().forEach(((FileSystemEntity x) => listing += [x.path]));
+  directory_list_files(
+    directory,
+  ).forEach(((FileSystemEntity file) => listing += [file.path]));
   listing.sort();
   int index = listing.indexOf('${current_background.path}');
   String next = listing[(index + 1) % listing.length];
@@ -88,9 +90,49 @@ void increment(Directory directory, File current_background) {
 
 void decrement(Directory directory, File current_background) {
   List<String> listing = [];
-  directory.listSync().forEach(((FileSystemEntity x) => listing += [x.path]));
+  directory_list_files(
+    directory,
+  ).forEach(((FileSystemEntity file) => listing += [file.path]));
   listing.sort();
   int index = listing.indexOf('${current_background.path}');
   String next = listing[index - 1];
   set_background(next, live: is_live_background());
+}
+
+void Folder_switch(Directory master_folder, int offset) {
+  List<String> folders = [];
+  List<String> avaliable_backgrounds = [];
+  int index = folders.indexOf(File(get_background()).parent.parent.path);
+  String chosen;
+
+  void correct_type(File file, {bool live = false}) {
+    int type = check_live_or_static(file.path);
+
+    // ignore other types
+    if (type == -1) {
+      return null;
+    }
+
+    if (live) {
+      if (type == 0) {
+        avaliable_backgrounds += [file.path];
+      }
+    } else {
+      if (type == 1) {
+        avaliable_backgrounds += [file.path];
+      }
+    }
+  }
+
+  directory_list_folders(
+    master_folder,
+  ).forEach((Directory dir) => folders += [dir.path]);
+  folders.sort();
+  Directory next_folder = Directory(folders[(index + offset) % folders.length]);
+  directory_list_files(
+    next_folder,
+  ).forEach((File file) => correct_type(file, live: is_live_background()));
+  chosen =
+      avaliable_backgrounds[Random().nextInt(avaliable_backgrounds.length)];
+  set_background(chosen, live: is_live_background());
 }

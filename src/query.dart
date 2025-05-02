@@ -53,3 +53,17 @@ String get_directory(String file) {
 bool is_live_background() {
   return ((Process.runSync("pidof", ["swww-daemon"]).exitCode) != 0);
 }
+
+int check_live_or_static(String file) {
+  final List<String> live_formats = ["mp4", ".mkv", ".gif"]; // 0
+  final List<String> static_formats = [".png", ".jpg", ".jpeg", ".webp"]; // 1
+  // else -1
+
+  if (live_formats.any((String format) => file.endsWith(format))) {
+    return 0;
+  } else if (static_formats.any((String format) => file.endsWith(format))) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
