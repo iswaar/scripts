@@ -41,6 +41,7 @@ void main(List<String> arguments) {
           '.git',
           '.vscode',
           'build',
+          '.zsh',
         ].any((String x) => entity.path.contains(x))))) {
       compile(log, Directory(entity.path));
     }
