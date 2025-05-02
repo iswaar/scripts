@@ -7,7 +7,7 @@ void background_process(String process) {
   Process.start('bash', [
     "-c",
     ' ( ( ($process)& ) && disown) || echo failed ; exit',
-  ], mode:  ProcessStartMode.detached);
+  ], mode: ProcessStartMode.detached);
 }
 
 void reload_pywal(String background) {
@@ -75,4 +75,22 @@ void random_background() {
   String chosen =
       avaliable_backgrounds[Random().nextInt(avaliable_backgrounds.length)];
   set_background(chosen, live: (is_live_background()));
+}
+
+void increment(Directory directory, File current_background) {
+  List<String> listing = [];
+  directory.listSync().forEach(((FileSystemEntity x) => listing += [x.path]));
+  listing.sort();
+  int index = listing.indexOf('${current_background.path}');
+  String next = listing[(index + 1) % listing.length];
+  set_background(next, live: is_live_background());
+}
+
+void decrement(Directory directory, File current_background) {
+  List<String> listing = [];
+  directory.listSync().forEach(((FileSystemEntity x) => listing += [x.path]));
+  listing.sort();
+  int index = listing.indexOf('${current_background.path}');
+  String next = listing[index - 1];
+  set_background(next, live: is_live_background());
 }

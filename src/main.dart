@@ -3,7 +3,10 @@ import 'query.dart';
 import 'override.dart';
 
 void main(List<String> arguments) {
-  String user = Process.runSync('whoami', []).stdout;
+  String user = Process.runSync(
+    'whoami',
+    [],
+  ).stdout.toString().replaceAll('\n', '');
   File default_background_static = File(
     "/home/$user/.wallpapers/static/default.png",
   );
@@ -31,5 +34,9 @@ void main(List<String> arguments) {
     } else {
       control(default_background_static, live: true);
     }
-  } else if (is_live_background()) {}
+  } else if (arguments[0] == "--increment") {
+    increment(File(get_background()).parent, File(get_background()));
+  } else if (arguments[0] == "--decrement") {
+    decrement(File(get_background()).parent, File(get_background()));
+  }
 }
